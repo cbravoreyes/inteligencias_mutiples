@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#1e90ff"/>
+  <link rel="manifest" href="manifest.json">
+  <title>Inteligencias Múltiples con IA</title>
+  <link rel="icon" href="icon.png">
+</head>
+<body style="font-family: Arial; max-width: 600px; margin: auto; padding: 20px;">
+
+  <h2>Trabajo con las inteligencias múltiples de Gardner</h2>
+  <strong>cbravo2025</strong>
+  <p>Selecciona una o más inteligencias múltiples y haz clic en el LLM de tu preferencia para generar un análisis con herramientas de IA adecuadas.</p>
+
+  <label for="inteligencias">Selecciona las inteligencias múltiples:</label><br>
+  <select id="inteligencias" multiple size="8" style="width: 100%; padding: 8px;">
+    <option value="Lingüística-verbal">Lingüística-verbal</option>
+    <option value="Lógico-matemática">Lógico-matemática</option>
+    <option value="Corporal-cinestésica">Corporal-cinestésica</option>
+    <option value="Visual-espacial">Visual-espacial</option>
+    <option value="Musical">Musical</option>
+    <option value="Interpersonal">Interpersonal</option>
+    <option value="Intrapersonal">Intrapersonal</option>
+    <option value="Naturalista">Naturalista</option>
+  </select>
+
+  <div style="margin-top: 20px;">
+    <button onclick="abrirBot('chatgpt')" style="background-color:#1e90ff;color:white;padding:10px;margin:5px;">Abrir en ChatGPT</button>
+    <button onclick="abrirBot('grok')" style="background-color:#f44336;color:white;padding:10px;margin:5px;">Abrir en Grok</button>
+    <button onclick="abrirBot('perplexity')" style="background-color:#8000c8;color:white;padding:10px;margin:5px;">Abrir en Perplexity</button>
+  </div>
+
+  <script>
+    function abrirBot(bot) {
+      const select = document.getElementById('inteligencias');
+      const seleccionadas = Array.from(select.selectedOptions).map(opt => opt.value);
+      if (seleccionadas.length === 0) {
+        alert("Selecciona al menos una inteligencia múltiple.");
+        return;
+      }
+      const prompt = encodeURIComponent(
+        `Explica el significado de las siguientes inteligencias múltiples de Gardner: ${seleccionadas.join(', ')}. Además, propone herramientas de inteligencia artificial adecuadas para estimular y desarrollar cada una de ellas en el contexto educativo.`
+      );
+      let url = '';
+      if (bot === 'chatgpt') url = `https://chatgpt.com/?q=${prompt}`;
+      if (bot === 'grok') url = `https://grok.com/?q=${prompt}`;
+      if (bot === 'perplexity') url = `https://www.perplexity.ai/?q=${prompt}`;
+      window.open(url, '_blank');
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log("SW registrado"))
+        .catch(err => console.error("SW falló", err));
+    }
+  </script>
+
+</body>
+</html>
